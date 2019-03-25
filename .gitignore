@@ -1,10 +1,8 @@
 *.*
 
+!CNAME
 !.gitignore
 !.gitmodules
-!CNAME
-!.dockerignore
-!Dockerfile
 !circle.yml
 !pom.xml
 !*.java
@@ -18,8 +16,4 @@
 !src/site/*.xml
 !src/site/*.xslt
 
-!src/analysis/**/*.xml
-!src/analysis/**/*.txt
-
 target/**
-
