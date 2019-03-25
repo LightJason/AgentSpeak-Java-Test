@@ -69,7 +69,7 @@ import static org.junit.Assume.assumeTrue;
 /**
  * test all resource strings
  */
-public abstract class ILanguageLabel extends IBaseTest
+public final class CLanguageLabel extends IBaseTest
 {
     /**
      * classpath separator
@@ -135,6 +135,7 @@ public abstract class ILanguageLabel extends IBaseTest
     /**
      * check package translation configuration versus property items
      */
+    @Test 
     public void testTranslation()
     {
         assumeTrue( "no languages are defined for checking", !LANGUAGEPROPERY.isEmpty() );
@@ -178,6 +179,7 @@ public abstract class ILanguageLabel extends IBaseTest
      *
      * @throws IOException throws on io errors
      */
+    @Test
     public void testResourceString() throws IOException
     {
         assumeTrue( "no languages are defined for checking", !LANGUAGEPROPERY.isEmpty() );
