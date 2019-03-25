@@ -32,6 +32,7 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Test;
 import org.lightjason.agentspeak.common.CCommon;
 
 import javax.annotation.Nonnull;
@@ -90,7 +91,7 @@ public final class CLanguageLabel extends IBaseTest
         URI l_uri = null;
         try
         {
-            l_uri = ILanguageLabel.concaturl( ILanguageLabel.resourceurl(), "../../src/main/java/" ).toURI();
+            l_uri = CLanguageLabel.concaturl( CLanguageLabel.resourceurl(), "../../src/main/java/" ).toURI();
         }
         catch ( final Exception l_exception )
         {
@@ -107,8 +108,8 @@ public final class CLanguageLabel extends IBaseTest
                      {
                          LANGUAGEPROPERY.put(
                              l_languages[i],
-                             ILanguageLabel.concaturl(
-                                 ILanguageLabel.resourceurl(),
+                             CLanguageLabel.concaturl(
+                                 CLanguageLabel.resourceurl(),
                                  MessageFormat.format(
                                      "{0}/{1}/{2}",
                                      l_resource,
