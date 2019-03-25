@@ -136,7 +136,7 @@ public final class CLanguageLabel extends IBaseTest
     /**
      * check package translation configuration versus property items
      */
-    @Test 
+    @Test
     public void testTranslation()
     {
         assumeTrue( "no languages are defined for checking", !LANGUAGEPROPERY.isEmpty() );
