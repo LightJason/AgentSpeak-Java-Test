@@ -1,3 +1,0 @@
-[submodule "src/codestyle"]
-	path = src/codestyle
-	url = git@github.com:LightJason/AgentSpeak-Java-CodeStyle.git
