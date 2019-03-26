@@ -91,7 +91,7 @@ public final class TestCLanguageLabel extends IBaseTest
         URI l_uri = null;
         try
         {
-            l_uri = CLanguageLabel.concaturl( CLanguageLabel.resourceurl(), "../../src/main/java/" ).toURI();
+            l_uri = TestCLanguageLabel.concaturl( TestCLanguageLabel.resourceurl(), "../../src/main/java/" ).toURI();
         }
         catch ( final Exception l_exception )
         {
@@ -108,8 +108,8 @@ public final class TestCLanguageLabel extends IBaseTest
                      {
                          LANGUAGEPROPERY.put(
                              l_languages[i],
-                             CLanguageLabel.concaturl(
-                                 CLanguageLabel.resourceurl(),
+                             TestCLanguageLabel.concaturl(
+                                 TestCLanguageLabel.resourceurl(),
                                  MessageFormat.format(
                                      "{0}/{1}/{2}",
                                      l_resource,
