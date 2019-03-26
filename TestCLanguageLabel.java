@@ -70,7 +70,7 @@ import static org.junit.Assume.assumeTrue;
 /**
  * test all resource strings
  */
-public final class CLanguageLabel extends IBaseTest
+public final class TestCLanguageLabel extends IBaseTest
 {
     /**
      * classpath separator
