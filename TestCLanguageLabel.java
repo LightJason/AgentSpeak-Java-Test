@@ -32,6 +32,8 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import org.lightjason.agentspeak.common.CCommon;
 
@@ -63,7 +65,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 
@@ -183,7 +184,8 @@ public final class TestCLanguageLabel extends IBaseTest
     @Test
     public void testResourceString() throws IOException
     {
-        assumeTrue( "no languages are defined for checking", !LANGUAGEPROPERY.isEmpty() );
+        Assume.assumeTrue( "no languages are defined for checking", !LANGUAGEPROPERY.isEmpty() );
+        Assume.assumeTrue( "language files does not exist", LANGUAGEPROPERY.values().stream().anyMatch( i -> new File( i ).isFile() ) );
 
         final Set<String> l_ignoredlabel = new HashSet<>();
 
@@ -202,7 +204,7 @@ public final class TestCLanguageLabel extends IBaseTest
                      }
                      catch ( final IOException l_excpetion )
                      {
-                         assertTrue( MessageFormat.format( "io error on file [{0}]: {1}", i, l_excpetion.getMessage() ), false );
+                         Assert.fail( MessageFormat.format( "io error on file [{0}]: {1}", i, l_excpetion.getMessage() ) );
                          return Stream.empty();
                      }
                      catch ( final ParseProblemException l_exception )
@@ -239,7 +241,7 @@ public final class TestCLanguageLabel extends IBaseTest
         );
 
         // --- check of any label is found
-        assertFalse( "translation labels are empty, check naming of translation method", l_label.isEmpty() );
+        Assert.assertFalse( "translation labels are empty, check naming of translation method", l_label.isEmpty() );
 
         // --- check label towards the property definition
         if ( l_ignoredlabel.size() > 0 )
@@ -261,7 +263,7 @@ public final class TestCLanguageLabel extends IBaseTest
 
                 // --- check if all property items are within the parsed labels
                 l_parseditems.removeAll( l_propertyitems );
-                assertTrue(
+                Assert.assertTrue(
                     MessageFormat.format(
                         "the following {1,choice,1#key|1<keys} in language [{0}] {1,choice,1#is|1<are} not existing within the language file:\n{2}",
                         k,
@@ -280,7 +282,7 @@ public final class TestCLanguageLabel extends IBaseTest
                                                                                                       .allMatch( l -> false )
                                                                           )
                                                                           .collect( Collectors.toSet() );
-                assertTrue(
+                Assert.assertTrue(
                     MessageFormat.format(
                         "the following {1,choice,1#key|1<keys} in language [{0}] {1,choice,1#is|1<are} not existing within the source code:\n{2}",
                         k,
@@ -292,7 +294,7 @@ public final class TestCLanguageLabel extends IBaseTest
             }
             catch ( final IOException l_exception )
             {
-                assertTrue( MessageFormat.format( "io exception: {0}", l_exception.getMessage() ), false );
+                Assert.fail( MessageFormat.format( "io exception: {0}", l_exception.getMessage() ) );
             }
         } );
     }
