@@ -29,7 +29,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.lightjason.agentspeak.action.IBaseAction;
@@ -68,7 +67,7 @@ import java.util.stream.Stream;
  * If a file agentprintin.conf exists on the main directory alls print statements will be shown
  */
 @RunWith( DataProviderRunner.class )
-public final class TestAsl extends IBaseTest
+public final class TestCAsl extends IBaseTest
 {
     /**
      * tag of iteration
@@ -116,7 +115,7 @@ public final class TestAsl extends IBaseTest
         try
         (
             final Stream<Path> l_walk = Files.walk(
-                Paths.get( TestAsl.class.getClassLoader().getResource( "" ).getPath(), "asl" )
+                Paths.get( TestCAsl.class.getClassLoader().getResource( "" ).getPath(), "asl" )
             )
         )
         {
