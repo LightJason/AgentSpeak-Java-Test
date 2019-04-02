@@ -28,6 +28,7 @@ import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -132,9 +133,7 @@ public final class TestCAsl extends IBaseTest
         }
         catch ( final IOException l_exception )
         {
-            l_exception.printStackTrace();
-            Assert.fail();
-            return Stream.of().toArray();
+            return new Object[]{""};
         }
     }
 
@@ -149,6 +148,8 @@ public final class TestCAsl extends IBaseTest
     @UseDataProvider( "generate" )
     public void testASLDefault( @Nonnull final String p_file ) throws Exception
     {
+        Assume.assumeFalse( "asl files does not exist", p_file.isEmpty() );
+
         final IAgent<?> l_agent;
         final int l_iteration;
         final int l_testcount;
