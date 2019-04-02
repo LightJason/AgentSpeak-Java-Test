@@ -23,7 +23,6 @@
 
 package org.lightjason.agentspeak.testing.action;
 
-import com.codepoetics.protonpack.StreamUtils;
 import org.lightjason.agentspeak.action.IBaseAction;
 import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.common.IPath;
