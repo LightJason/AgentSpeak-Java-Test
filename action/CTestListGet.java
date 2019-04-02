@@ -32,7 +32,6 @@ import org.lightjason.agentspeak.language.execution.IContext;
 import org.lightjason.agentspeak.language.fuzzy.IFuzzyValue;
 
 import javax.annotation.Nonnull;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
