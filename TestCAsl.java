@@ -43,10 +43,12 @@ import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.agentspeak.language.execution.IContext;
 import org.lightjason.agentspeak.language.fuzzy.IFuzzyValue;
 import org.lightjason.agentspeak.language.variable.CConstant;
+import org.lightjason.agentspeak.testing.action.CTestAnd;
 import org.lightjason.agentspeak.testing.action.CTestEqual;
 import org.lightjason.agentspeak.testing.action.CTestIs;
 import org.lightjason.agentspeak.testing.action.CTestListGet;
 import org.lightjason.agentspeak.testing.action.CTestListRange;
+import org.lightjason.agentspeak.testing.action.CTestOr;
 import org.lightjason.agentspeak.testing.action.CTestPrint;
 import org.lightjason.agentspeak.testing.action.CTestToString;
 
@@ -187,7 +189,9 @@ public final class TestCAsl extends IBaseTest
                             new CTestToString(),
                             new CTestIs(),
                             new CTestListGet(),
-                            new CTestListRange()
+                            new CTestListRange(),
+                            new CTestAnd(),
+                            new CTestOr()
                         ),
                         CCommon.actionsFromPackage()
                     )
