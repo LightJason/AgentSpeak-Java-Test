@@ -48,7 +48,7 @@ public final class CTestAnd extends IBaseAction
     /**
      * action name
      */
-    private final IPath NAME = CPath.of( "test/and" );
+    private static final IPath NAME = CPath.of( "test/and" );
 
 
     @Nonnull

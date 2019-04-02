@@ -48,7 +48,7 @@ public final class CTestOr extends IBaseAction
     /**
      * action name
      */
-    private final IPath NAME = CPath.of( "test/or" );
+    private static final IPath NAME = CPath.of( "test/or" );
 
 
     @Nonnull
