@@ -26,29 +26,33 @@ package org.lightjason.agentspeak.testing.action;
 import org.lightjason.agentspeak.action.IBaseAction;
 import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.common.IPath;
+import org.lightjason.agentspeak.error.context.CExecutionIllegalStateException;
+import org.lightjason.agentspeak.language.CCommon;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.agentspeak.language.execution.IContext;
 import org.lightjason.agentspeak.language.fuzzy.IFuzzyValue;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.OptionalDouble;
 import java.util.stream.Stream;
 
 
 /**
- * test action to get element from list
+ * test min action
  */
-public final class CTestListGet extends IBaseAction
+public final class CTestMin extends IBaseAction
 {
     /**
      * serial id
      */
-    private static final long serialVersionUID = 3930249103046175359L;
+    private static final long serialVersionUID = -6743875690655003751L;
     /**
      * action name
      */
-    private static final IPath NAME = CPath.of( "test/list/get" );
+    private static final IPath NAME = CPath.of( "test/min" );
 
     @Nonnull
     @Override
@@ -57,23 +61,31 @@ public final class CTestListGet extends IBaseAction
         return NAME;
     }
 
+    @Nonnegative
     @Override
     public int minimalArgumentNumber()
     {
-        return 2;
+        return 1;
     }
 
     @Nonnull
     @Override
-    public Stream<IFuzzyValue<?>> execute( final boolean p_parallel, @Nonnull final IContext p_context, @Nonnull final List<ITerm> p_argument,
-                                           @Nonnull final List<ITerm> p_return )
+    public Stream<IFuzzyValue<?>> execute( final boolean p_parallel, @Nonnull final IContext p_context,
+                                           @Nonnull final List<ITerm> p_argument, @Nonnull final List<ITerm> p_return
+    )
     {
-        p_return.add(
-            CRawTerm.of(
-                p_argument.get( 0 ).<List<?>>raw().get( p_argument.get( 1 ).<Number>raw().intValue() )
-            )
-        );
+        final OptionalDouble l_value = CCommon.flatten( p_argument )
+                                              .map( ITerm::<Number>raw )
+                                              .mapToDouble( Number::doubleValue )
+                                              .min();
 
+        if ( !l_value.isPresent() )
+            throw new CExecutionIllegalStateException(
+                p_context,
+                org.lightjason.agentspeak.common.CCommon.languagestring( this, "novaluepresent" )
+            );
+
+        p_return.add( CRawTerm.of( l_value.getAsDouble() ) );
         return Stream.of();
     }
 }
