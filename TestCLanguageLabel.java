@@ -48,6 +48,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -190,55 +191,10 @@ public final class TestCLanguageLabel extends IBaseTest
         final Set<String> l_ignoredlabel = new HashSet<>();
 
         // --- parse source and get label definition
-        final Set<String> l_label = Collections.unmodifiableSet(
-            Files.walk( Paths.get( SEARCHPATH ) )
-                 .filter( Files::isRegularFile )
-                 .filter( i -> i.toString().endsWith( ".java" ) )
-                 .flatMap( i ->
-                 {
-                     try
-                     {
-                         final CJavaVistor l_visitor = new CJavaVistor();
-                         new JavaParser().parse( i.toFile() ).getResult().get().accept( l_visitor, null );
-                         return l_visitor.labels().stream();
-                     }
-                     catch ( final IOException l_excpetion )
-                     {
-                         Assert.fail( MessageFormat.format( "io error on file [{0}]: {1}", i, l_excpetion.getMessage() ) );
-                         return Stream.empty();
-                     }
-                     catch ( final ParseProblemException l_exception )
-                     {
-                         // add label build by class path to the ignore list
-                         l_ignoredlabel.add(
-                             i.toAbsolutePath().toString()
-                              // remove path to class directory
-                              .replace(
-                                  FileSystems.getDefault()
-                                             .provider()
-                                             .getPath( SEARCHPATH )
-                                             .toAbsolutePath()
-                                             .toString(),
-                                  ""
-                              )
-                              // string starts with path separator
-                              .substring( 1 )
-                              // remove file extension
-                              .replace( ".java", "" )
-                              // replace separators with dots
-                              .replace( "/", CLASSSEPARATOR )
-                              // convert to lower-case
-                              .toLowerCase()
-                              // remove package-root name
-                              .replace( CCommon.PACKAGEROOT + CLASSSEPARATOR, "" )
-                         );
-
-                         System.err.println( MessageFormat.format( "parsing error on file [{0}]:\n{1}", i, l_exception.getMessage() ) );
-                         return Stream.empty();
-                     }
-                 } )
-                 .collect( Collectors.toSet() )
-        );
+        final Set<String> l_label = Files.walk( Paths.get( SEARCHPATH ) )
+                                         .filter( Files::isRegularFile )
+                                         .filter( i -> i.toString().endsWith( ".java" ) )
+                                         .flatMap( i -> labels( i, l_ignoredlabel ) ).collect( Collectors.toUnmodifiableSet() );
 
         // --- check of any label is found
         Assert.assertFalse( "translation labels are empty, check naming of translation method", l_label.isEmpty() );
@@ -297,6 +253,57 @@ public final class TestCLanguageLabel extends IBaseTest
                 Assert.fail( MessageFormat.format( "io exception: {0}", l_exception.getMessage() ) );
             }
         } );
+    }
+
+    /**
+     * get labels
+     *
+     * @param p_file input java file
+     * @param p_ignoredlabel ignoring labels (will be append)
+     * @return label stream
+     */
+    private static Stream<String> labels( @Nonnull final Path p_file, @Nonnull final Set<String> p_ignoredlabel )
+    {
+        try
+        {
+            final CJavaVistor l_visitor = new CJavaVistor();
+            new JavaParser().parse( p_file.toFile() ).getResult().get().accept( l_visitor, null );
+            return l_visitor.labels().stream();
+        }
+        catch ( final IOException l_excpetion )
+        {
+            Assert.fail( MessageFormat.format( "io error on file [{0}]: {1}", p_file, l_excpetion.getMessage() ) );
+            return Stream.empty();
+        }
+        catch ( final ParseProblemException l_exception )
+        {
+            // add label build by class path to the ignore list
+            p_ignoredlabel.add(
+                p_file.toAbsolutePath().toString()
+                 // remove path to class directory
+                 .replace(
+                     FileSystems.getDefault()
+                                .provider()
+                                .getPath( SEARCHPATH )
+                                .toAbsolutePath()
+                                .toString(),
+                     ""
+                 )
+                 // string starts with path separator
+                 .substring( 1 )
+                 // remove file extension
+                 .replace( ".java", "" )
+                 // replace separators with dots
+                 .replace( "/", CLASSSEPARATOR )
+                 // convert to lower-case
+                 .toLowerCase()
+                 // remove package-root name
+                 .replace( CCommon.PACKAGEROOT + CLASSSEPARATOR, "" )
+            );
+
+            System.err.println( MessageFormat.format( "parsing error on file [{0}]:\n{1}", p_file, l_exception.getMessage() ) );
+            return Stream.empty();
+        }
     }
 
 
