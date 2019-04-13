@@ -85,7 +85,7 @@ public abstract class IBaseTest
      */
     @Nullable
     @SuppressWarnings( "unchecked" )
-    protected static <N> N property( @Nonnull final String p_name, @Nonnull final Object p_object ) throws NoSuchFieldException, IllegalAccessException
+    protected static <N> N property( @Nonnull final String p_name, @Nonnull final Object p_object ) throws IllegalAccessException
     {
 
         final Field l_field = CCommon.classfields( p_object.getClass() )
@@ -230,9 +230,9 @@ public abstract class IBaseTest
         /**
          * ctor
          *
-         * @throws Exception is thrown on any error
+         * @throws IOException on stream error
          */
-        public CAgentGenerator() throws Exception
+        public CAgentGenerator() throws IOException
         {
             this( "", IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY );
         }
@@ -241,9 +241,9 @@ public abstract class IBaseTest
          * ctor
          *
          * @param p_asl asl code
-         * @throws Exception is thrown on any error
+         * @throws IOException on stream error
          */
-        public CAgentGenerator( @Nonnull final String p_asl ) throws Exception
+        public CAgentGenerator( @Nonnull final String p_asl ) throws IOException
         {
             this( p_asl, IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY );
         }
@@ -252,9 +252,8 @@ public abstract class IBaseTest
          * ctor
          *
          * @param p_asl asl code
-         * @throws Exception is thrown on any error
          */
-        public CAgentGenerator( @Nonnull final InputStream p_asl ) throws Exception
+        public CAgentGenerator( @Nonnull final InputStream p_asl )
         {
             super( p_asl, IActionGenerator.EMPTY, ILambdaStreamingGenerator.EMPTY );
         }
@@ -265,10 +264,10 @@ public abstract class IBaseTest
          * @param p_asl asl code
          * @param p_action actions
          * @param p_lambda lambdas
-         * @throws Exception is thrown on any error
+         * @throws IOException on stream error
          */
         public CAgentGenerator( @Nonnull final String p_asl, @Nonnull final IActionGenerator p_action, @Nonnull final ILambdaStreamingGenerator p_lambda )
-            throws Exception
+            throws IOException
         {
             super( IOUtils.toInputStream( p_asl, "UTF-8" ), p_action, p_lambda );
         }
@@ -280,10 +279,10 @@ public abstract class IBaseTest
          * @param p_action actions
          * @param p_lambda lambdas
          * @param p_variablebuilder variable builder
-         * @throws Exception is thrown on any error
+         * @throws IOException on stream error
          */
         public CAgentGenerator( @Nonnull final String p_asl, @Nonnull final IActionGenerator p_action,
-                                @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IVariableBuilder p_variablebuilder ) throws Exception
+                                @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IVariableBuilder p_variablebuilder ) throws IOException
         {
             super( IOUtils.toInputStream( p_asl, "UTF-8" ), p_action, p_lambda, p_variablebuilder );
         }
@@ -295,10 +294,9 @@ public abstract class IBaseTest
          * @param p_action actions
          * @param p_lambda lambdas
          * @param p_variablebuilder variable builder
-         * @throws Exception is thrown on any error
          */
         public CAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_action,
-                                @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IVariableBuilder p_variablebuilder ) throws Exception
+                                @Nonnull final ILambdaStreamingGenerator p_lambda, @Nonnull final IVariableBuilder p_variablebuilder )
         {
             super( p_asl, p_action, p_lambda, p_variablebuilder );
         }
@@ -309,10 +307,8 @@ public abstract class IBaseTest
          * @param p_asl asl code
          * @param p_action actions
          * @param p_lambda lambdas
-         * @throws Exception is thrown on any error
          */
         public CAgentGenerator( @Nonnull final InputStream p_asl, @Nonnull final IActionGenerator p_action, @Nonnull final ILambdaStreamingGenerator p_lambda )
-            throws Exception
         {
             super( p_asl, p_action, p_lambda );
         }
