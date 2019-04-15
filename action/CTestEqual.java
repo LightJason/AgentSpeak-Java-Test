@@ -150,6 +150,6 @@ public final class CTestEqual extends IBaseAction
         return CCommon.isssignableto( p_source, Multimap.class ) && CCommon.isssignableto( p_target, Multimap.class )
                ? Stream.of( Arrays.equals( p_source.<Multimap<?, ?>>raw().keySet().toArray(), p_target.<Multimap<?, ?>>raw().keySet().toArray() )
                             && Arrays.equals( p_source.<Multimap<?, ?>>raw().values().toArray(), p_target.<Multimap<?, ?>>raw().values().toArray() ) )
-               : Stream.of();
+               : Stream.empty();
     }
 }
