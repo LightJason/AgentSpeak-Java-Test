@@ -87,7 +87,7 @@ public final class CTestEqual extends IBaseAction
             equalobject( i.get( 0 ), i.get( 1 ) ) ).filter( j -> j ).findFirst().orElse( false )
         ).map( CRawTerm::of ).forEach( p_return::add );
 
-        return Stream.of();
+        return Stream.empty();
     }
 
     /**
@@ -118,7 +118,7 @@ public final class CTestEqual extends IBaseAction
     {
         return CCommon.isssignableto( p_source, Collection.class ) && CCommon.isssignableto( p_target, Collection.class )
                ? Stream.of( Arrays.equals( p_source.<Collection<?>>raw().toArray(), p_target.<Collection<?>>raw().toArray() ) )
-               : Stream.of();
+               : Stream.empty();
     }
 
 
@@ -134,7 +134,7 @@ public final class CTestEqual extends IBaseAction
         return CCommon.isssignableto( p_source, Map.class ) && CCommon.isssignableto( p_target, Map.class )
                ? Stream.of( Arrays.equals( p_source.<Map<?, ?>>raw().keySet().toArray(), p_target.<Map<?, ?>>raw().keySet().toArray() )
                             && Arrays.equals( p_source.<Map<?, ?>>raw().values().toArray(), p_target.<Map<?, ?>>raw().values().toArray() ) )
-               : Stream.of();
+               : Stream.empty();
     }
 
 

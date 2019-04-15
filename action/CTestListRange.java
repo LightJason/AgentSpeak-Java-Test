@@ -82,6 +82,6 @@ public final class CTestListRange extends IBaseAction
             )
         );
 
-        return Stream.of();
+        return Stream.empty();
     }
 }

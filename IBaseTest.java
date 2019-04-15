@@ -395,7 +395,7 @@ public abstract class IBaseTest
             p_argument.stream()
                       .map( CRawTerm::of )
                       .forEach( m_value::add );
-            return Stream.of();
+            return Stream.empty();
         }
 
         /**

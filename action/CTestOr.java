@@ -75,6 +75,6 @@ public final class CTestOr extends IBaseAction
             )
         );
 
-        return Stream.of();
+        return Stream.empty();
     }
 }

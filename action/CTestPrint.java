@@ -87,6 +87,6 @@ public final class CTestPrint extends IBaseAction
         if ( m_show )
             System.out.println( p_argument.stream().map( Object::toString ).collect( Collectors.joining( "   " ) ) );
 
-        return Stream.of();
+        return Stream.empty();
     }
 }

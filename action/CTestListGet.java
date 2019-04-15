@@ -74,6 +74,6 @@ public final class CTestListGet extends IBaseAction
             )
         );
 
-        return Stream.of();
+        return Stream.empty();
     }
 }

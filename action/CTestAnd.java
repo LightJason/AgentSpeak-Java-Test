@@ -75,6 +75,6 @@ public final class CTestAnd extends IBaseAction
             )
         );
 
-        return Stream.of();
+        return Stream.empty();
     }
 }

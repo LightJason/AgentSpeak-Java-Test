@@ -268,7 +268,7 @@ public final class TestCAsl extends IBaseTest
                 p_argument.get( 0 ).<Boolean>raw()
             );
             m_count.incrementAndGet();
-            return Stream.of();
+            return Stream.empty();
         }
     }
 
