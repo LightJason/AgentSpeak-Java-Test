@@ -313,7 +313,7 @@ public abstract class IBaseTest
             super( p_asl, p_action, p_lambda );
         }
 
-        @Nullable
+        @Nonnull
         @Override
         public IAgent<?> generatesingle( @Nullable final Object... p_data )
         {
