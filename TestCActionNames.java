@@ -23,8 +23,8 @@
 
 package org.lightjason.agentspeak.testing;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.common.CCommon;
 
@@ -54,9 +54,9 @@ public final class TestCActionNames
      */
     private static void checkname( @Nonnull final IAction p_action )
     {
-        Assert.assertTrue(
-            p_action.getClass().getCanonicalName(),
-            p_action.name().toString().contains( p_action.getClass().getSimpleName().substring( 1 ).toLowerCase( Locale.ROOT ) )
+        Assertions.assertTrue(
+            p_action.name().toString().contains( p_action.getClass().getSimpleName().substring( 1 ).toLowerCase( Locale.ROOT ) ),
+            p_action.getClass().getCanonicalName()
         );
     }
 

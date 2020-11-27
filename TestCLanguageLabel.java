@@ -32,9 +32,9 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Test;
 import org.lightjason.agentspeak.common.CCommon;
 
 import javax.annotation.Nonnull;
@@ -65,10 +65,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assume.assumeTrue;
-
-
 /**
  * test all resource strings
  */
@@ -97,7 +93,7 @@ public final class TestCLanguageLabel extends IBaseTest
         }
         catch ( final Exception l_exception )
         {
-            assumeTrue( MessageFormat.format( "source directory cannot be read: {0}", l_exception.getMessage() ), false );
+            Assumptions.assumeTrue( false, MessageFormat.format( "source directory cannot be read: {0}", l_exception.getMessage() ) );
         }
 
         // read all possible languages and define the first as default
@@ -128,7 +124,7 @@ public final class TestCLanguageLabel extends IBaseTest
                      }
                      catch ( final Exception l_exception )
                      {
-                         assumeTrue( MessageFormat.format( "source directory cannot be read: {0}", l_exception.getMessage() ), false );
+                         Assumptions.assumeTrue( false, MessageFormat.format( "source directory cannot be read: {0}", l_exception.getMessage() ) );
                      }
                  } );
 
@@ -141,7 +137,7 @@ public final class TestCLanguageLabel extends IBaseTest
     @Test
     public void testTranslation()
     {
-        assumeTrue( "no languages are defined for checking", !LANGUAGEPROPERY.isEmpty() );
+        Assumptions.assumeTrue( !LANGUAGEPROPERY.isEmpty(), "no languages are defined for checking" );
 
         // --- read language definitions of the configuration
         final Set<String> l_translation = Collections.unmodifiableSet(
@@ -154,26 +150,26 @@ public final class TestCLanguageLabel extends IBaseTest
         // --- check if a test (language resource) exists for each definied language
         final Set<String> l_translationtesting = new HashSet<>( l_translation );
         l_translationtesting.removeAll( LANGUAGEPROPERY.keySet() );
-        assertFalse(
+        Assertions.assertFalse(
+            !l_translationtesting.isEmpty(),
             MessageFormat.format(
                 "configuration defines {1,choice,1#translation|1<translations} {0} that {1,choice,1#is|1<are} not tested",
                 l_translationtesting,
                 l_translationtesting.size()
-            ),
-            !l_translationtesting.isEmpty()
+            )
         );
 
 
         // --- check unused language resource files
         final Set<String> l_translationusing = new HashSet<>( LANGUAGEPROPERY.keySet() );
         l_translationusing.removeAll( l_translation );
-        assertFalse(
+        Assertions.assertFalse(
+            !l_translationusing.isEmpty(),
             MessageFormat.format(
                 "{1,choice,1#translation|1<translations} {0} {1,choice,1#is|1<are} checked, which will not be used within the package configuration",
                 l_translationusing,
                 l_translationusing.size()
-            ),
-            !l_translationusing.isEmpty()
+            )
         );
     }
 
@@ -185,8 +181,8 @@ public final class TestCLanguageLabel extends IBaseTest
     @Test
     public void testResourceString() throws IOException
     {
-        Assume.assumeTrue( "no languages are defined for checking", !LANGUAGEPROPERY.isEmpty() );
-        Assume.assumeTrue( "language files does not exist", LANGUAGEPROPERY.values().stream().anyMatch( i -> new File( i ).isFile() ) );
+        Assumptions.assumeTrue( !LANGUAGEPROPERY.isEmpty(), "no languages are defined for checking" );
+        Assumptions.assumeTrue( LANGUAGEPROPERY.values().stream().anyMatch( i -> new File( i ).isFile() ), "language files does not exist" );
 
         final Set<String> l_ignoredlabel = new HashSet<>();
 
@@ -197,7 +193,7 @@ public final class TestCLanguageLabel extends IBaseTest
                                          .flatMap( i -> labels( i, l_ignoredlabel ) ).collect( Collectors.toUnmodifiableSet() );
 
         // --- check of any label is found
-        Assert.assertFalse( "translation labels are empty, check naming of translation method", l_label.isEmpty() );
+        Assertions.assertFalse( l_label.isEmpty(), "translation labels are empty, check naming of translation method" );
 
         // --- check label towards the property definition
         if ( l_ignoredlabel.size() > 0 )
@@ -219,14 +215,14 @@ public final class TestCLanguageLabel extends IBaseTest
 
                 // --- check if all property items are within the parsed labels
                 l_parseditems.removeAll( l_propertyitems );
-                Assert.assertTrue(
+                Assertions.assertTrue(
+                    l_parseditems.isEmpty(),
                     MessageFormat.format(
                         "the following {1,choice,1#key|1<keys} in language [{0}] {1,choice,1#is|1<are} not existing within the language file:\n{2}",
                         k,
                         l_parseditems.size(),
                         StringUtils.join( l_parseditems, ", " )
-                    ),
-                    l_parseditems.isEmpty()
+                    )
                 );
 
 
@@ -238,19 +234,19 @@ public final class TestCLanguageLabel extends IBaseTest
                                                                                                       .allMatch( l -> false )
                                                                           )
                                                                           .collect( Collectors.toSet() );
-                Assert.assertTrue(
+                Assertions.assertTrue(
+                    l_ignoredpropertyitems.isEmpty(),
                     MessageFormat.format(
                         "the following {1,choice,1#key|1<keys} in language [{0}] {1,choice,1#is|1<are} not existing within the source code:\n{2}",
                         k,
                         l_ignoredpropertyitems.size(),
                         StringUtils.join( l_ignoredpropertyitems, ", " )
-                    ),
-                    l_ignoredpropertyitems.isEmpty()
+                    )
                 );
             }
             catch ( final IOException l_exception )
             {
-                Assert.fail( MessageFormat.format( "io exception: {0}", l_exception.getMessage() ) );
+                Assertions.fail( MessageFormat.format( "io exception: {0}", l_exception.getMessage() ) );
             }
         } );
     }
@@ -272,7 +268,7 @@ public final class TestCLanguageLabel extends IBaseTest
         }
         catch ( final IOException l_excpetion )
         {
-            Assert.fail( MessageFormat.format( "io error on file [{0}]: {1}", p_file, l_excpetion.getMessage() ) );
+            Assertions.fail( MessageFormat.format( "io error on file [{0}]: {1}", p_file, l_excpetion.getMessage() ) );
             return Stream.empty();
         }
         catch ( final ParseProblemException l_exception )

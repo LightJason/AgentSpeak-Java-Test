@@ -24,7 +24,7 @@
 package org.lightjason.agentspeak.testing;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.lightjason.agentspeak.action.IBaseAction;
 import org.lightjason.agentspeak.agent.IAgent;
 import org.lightjason.agentspeak.agent.IBaseAgent;
@@ -218,7 +218,7 @@ public abstract class IBaseTest
         catch ( final Exception l_exception )
         {
             l_exception.printStackTrace();
-            Assert.fail( l_exception.getMessage() );
+            Assertions.fail( l_exception.getMessage() );
         }
     }
 

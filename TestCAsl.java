@@ -23,15 +23,13 @@
 
 package org.lightjason.agentspeak.testing;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.lightjason.agentspeak.action.IBaseAction;
 import org.lightjason.agentspeak.agent.IAgent;
 import org.lightjason.agentspeak.common.CCommon;
@@ -75,7 +73,6 @@ import java.util.stream.Stream;
  * test agent structure.
  * If a file agentprintin.conf exists on the main directory alls print statements will be shown
  */
-@RunWith( DataProviderRunner.class )
 public final class TestCAsl extends IBaseTest
 {
     /**
@@ -108,7 +105,7 @@ public final class TestCAsl extends IBaseTest
     /**
      * initialize
      */
-    @Before
+    @BeforeEach
     public void initialize()
     {
         m_count = new AtomicInteger();
@@ -118,8 +115,7 @@ public final class TestCAsl extends IBaseTest
      * data provider for defining asl files
      * @return triple of test-cases (asl file, number of iterations, expected log items)
      */
-    @DataProvider
-    public static Object[] generate()
+    public static Stream<Arguments> generate()
     {
         try
         (
@@ -131,12 +127,12 @@ public final class TestCAsl extends IBaseTest
             return l_walk.filter( Files::isRegularFile )
                          .map( Path::toString )
                          .filter( i -> i.endsWith( ".asl" ) )
-                         .toArray();
+                         .map( Arguments::of );
 
         }
         catch ( final IOException l_exception )
         {
-            return new Object[]{""};
+            return Stream.of( Arguments.of() );
         }
     }
 
@@ -147,11 +143,11 @@ public final class TestCAsl extends IBaseTest
      * @param p_file tripel of asl code, cycles and expected success calls
      * @throws Exception on any error
      */
-    @Test
-    @UseDataProvider( "generate" )
+    @ParameterizedTest
+    @MethodSource( "generate" )
     public void testASLDefault( @Nonnull final String p_file ) throws Exception
     {
-        Assume.assumeFalse( "asl files does not exist", p_file.isEmpty() );
+        Assumptions.assumeFalse( p_file.isEmpty(), "asl files does not exist" );
 
         final IAgent<?> l_agent;
         final int l_iteration;
@@ -208,17 +204,17 @@ public final class TestCAsl extends IBaseTest
         catch ( final Exception l_exception )
         {
             l_exception.printStackTrace();
-            Assert.fail( p_file );
+            Assertions.fail( p_file );
             return;
         }
 
         IntStream.range( 0, l_iteration )
                  .forEach( i -> agentcycle( l_agent ) );
 
-        Assert.assertEquals(
-            MessageFormat.format( "{0} {1}", "number of tests", p_file ),
+        Assertions.assertEquals(
             l_testcount,
-            m_count.get()
+            m_count.get(),
+            MessageFormat.format( "{0} {1}", "number of tests", p_file )
         );
 
     }
@@ -258,14 +254,14 @@ public final class TestCAsl extends IBaseTest
         public Stream<IFuzzyValue<?>> execute( final boolean p_parallel, @Nonnull final IContext p_context,
                                                @Nonnull final List<ITerm> p_argument, @Nonnull final List<ITerm> p_return )
         {
-            Assert.assertTrue(
+            Assertions.assertTrue(
+                p_argument.get( 0 ).<Boolean>raw(),
                 MessageFormat.format(
                     "{0}{1}{2}",
                     p_context.instance().literal(),
                     p_argument.size() > 1 ? ": " : "",
                     p_argument.size() > 1 ? p_argument.get( 1 ).raw() : ""
-                ),
-                p_argument.get( 0 ).<Boolean>raw()
+                )
             );
             m_count.incrementAndGet();
             return Stream.empty();
