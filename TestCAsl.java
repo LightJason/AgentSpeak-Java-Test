@@ -55,11 +55,13 @@ import javax.annotation.Nonnull;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.LogManager;
@@ -117,6 +119,7 @@ public final class TestCAsl extends IBaseTest
      */
     public static Stream<Arguments> generate()
     {
+        final Arguments[] l_arguments;
         try
         (
             final Stream<Path> l_walk = Files.walk(
@@ -124,16 +127,19 @@ public final class TestCAsl extends IBaseTest
             )
         )
         {
-            return l_walk.filter( Files::isRegularFile )
+            l_arguments = l_walk.filter( Files::isRegularFile )
                          .map( Path::toString )
                          .filter( i -> i.endsWith( ".asl" ) )
-                         .map( Arguments::of );
+                         .map( Arguments::of )
+                         .toArray( Arguments[]::new );
 
         }
         catch ( final IOException l_exception )
         {
-            return Stream.of( Arguments.of() );
+            throw new UncheckedIOException( l_exception );
         }
+
+        return Arrays.stream( l_arguments );
     }
 
 
@@ -141,11 +147,10 @@ public final class TestCAsl extends IBaseTest
      * test for default generators and configuration
      *
      * @param p_file tripel of asl code, cycles and expected success calls
-     * @throws Exception on any error
      */
     @ParameterizedTest
     @MethodSource( "generate" )
-    public void testASLDefault( @Nonnull final String p_file ) throws Exception
+    public void testASLDefault( @Nonnull final String p_file )
     {
         Assumptions.assumeFalse( p_file.isEmpty(), "asl files does not exist" );
 
