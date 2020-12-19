@@ -136,7 +136,7 @@ public final class TestCAsl extends IBaseTest
         }
         catch ( final IOException l_exception )
         {
-            throw new UncheckedIOException( l_exception );
+            return Stream.of( Arguments.of( "" ) );
         }
 
         return Arrays.stream( l_arguments );
