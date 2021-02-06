@@ -1,6 +1,5 @@
 *.*
 
-!CNAME
 !.gitignore
 !.gitmodules
 !circle.yml
@@ -17,3 +16,4 @@
 !src/site/*.xslt
 
 target/**
+
